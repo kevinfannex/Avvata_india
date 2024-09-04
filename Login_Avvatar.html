@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login_Avvatar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--FireBase SDK-->
+    <script
+      defer
+      src="https://www.gstatic.com/firebasejs/8.10.1/firebase.js"
+    ></script>
+    <script
+      defer
+      src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"
+    ></script>
+    <script
+      defer
+      src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"
+    ></script>
+  </head>
+  <body>
+    <form id="form" class=>
+      <div class=" flex justify-center items-center p-[15%]  ">
+        <div class=" bg-[url('https://ik.imagekit.io/g4lukt2ll/Project%20aavatar/Project%20aavatar%20page%202/loader-2.gif?updatedAt=1724512976351')] bg-cover bg-no-repeat bg-center shadow-lg size-60 border-2 border-white border-r-black">
+          <p></p>
+        </div>
+        <div class="size-60 border-2 border-white border-l-black shadow-lg bg-white ">
+          <div class="pl-52 pt-1">
+            <a href="./index.html">
+              <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-badge-x"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg></p>
+            </a>
+          </div>
+          <div class="p-2 text-center">
+            <label for="email">Email </label>
+            <input placeholder="Enter your email" id="email" required class="border-2 border-white hover:border-b-2 hover:border-b-yellow-500 text-center" />
+            <p id="emailError" class="font-[Montserrat] text-red-500"></p>
+          </div>
+         <div class="p-2 text-center">
+          <label for="pass">Password</label>
+          <input type="password" placeholder="Enter password" id="pass" class="border-2 border-white hover:border-b-2 hover:border-b-yellow-500 text-center" />
+          <p id="passwordError" class="font-[Montserrat] text-red-500"></p>
+         </div>
+    
+  <div class="p-2 text-center">
+    <button class="bg-yellow-500 ring-1 ring-black hover:bg-transparent    px-3 rounded-md">
+      Submit
+    </button>
+  </div>
+          
+      </div>
+
+      </div>
+
+    </form>
+
+    <script>
+      const form = document.getElementById("form");
+      const emailElement = document.getElementById("email");
+      const passwordElement = document.getElementById("pass");
+      const emailError = document.getElementById("emailError");
+      const passwordError = document.getElementById("passwordError");
+
+      emailElement.addEventListener("blur", (e) => {
+        if (e.target.value === "") {
+          emailError.textContent = "*equired";
+        } else {
+          emailError.textContent = "";
+        }
+      });
+
+      passwordElement.addEventListener("blur", (e) => {
+        if (e.target.value === "") {
+          passwordError.textContent = "*equired";
+        } else {
+          passwordError.textContent = "";
+        }
+      });
+
+      const validFormData = (email, passward) => {
+        console.log("valid Method :", email, passward);
+
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        console.log("Ans : ", email.match(emailRegex));
+        if (email === "") {
+          emailError.textContent = "*Required";
+        }
+        if (pass === "") {
+          passwordError.textContent = "*Required";
+        }
+
+        if (!email.match(emailRegex)) {
+          emailError.textContent = "Ente a valid email";
+        } else {
+          console.log("Invalid Email");
+        }
+      };
+
+      const saveFormData = (email, password) => {
+        const firebaseConfig = {
+          apiKey: "AIzaSyBNiaikF56GL72_8czkcH0f2O4usV8rmRk",
+          authDomain: "login-avvatar.firebaseapp.com",
+          databaseURL:
+            "https://login-avvatar-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "login-avvatar",
+          storageBucket: "login-avvatar.appspot.com",
+          messagingSenderId: "526254573467",
+          appId: "1:526254573467:web:747efc3073777252a8c33e",
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.database().ref("ReqForm");
+
+        db.push({
+          email: email,
+          password: password,
+        });
+      };
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const emailValue = emailElement.value;
+        const passwordValue = passwordElement.value;
+
+        validFormData(emailValue, passwordValue);
+
+        saveFormData(emailValue, passwordValue);
+      });
+    </script>
+  </body>
+</html>
